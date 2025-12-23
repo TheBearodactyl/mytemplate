@@ -4,7 +4,7 @@
 static GLOBAL: MiMalloc = MiMalloc;
 
 {% endif %}{% if use_clap %} mod cli;
-
+{% endif %}{% if use_clap %} use {crate::cli::Cli, clap::Parser};
 {% endif %}{% if use_color_eyre %}use color_eyre::Result;
 {% endif %}{% if use_tracing %}use tracing::info;
 {% endif %}{% if use_crossterm %}use crossterm::{
@@ -19,6 +19,9 @@ async fn main() -> {% if use_color_eyre %}Result<()>{% else %}std::io::Result<()
 {% endif %}    {% if use_color_eyre %}
     color_eyre::install()?;
     {% endif %}
+	{% if use_clap %}
+	let argv = Cli::parse();
+	{% endif %}
     {% if use_tracing %}
     tracing_subscriber::fmt()
         .with_env_filter(
