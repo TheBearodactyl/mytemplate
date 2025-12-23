@@ -1,0 +1,41 @@
+{% if use_mimalloc %}use mimalloc::MiMalloc;
+
+#[global_allocator]
+static GLOBAL: MiMalloc = MiMalloc;
+
+{% endif %}{% if use_color_eyre %}use color_eyre::Result;
+{% endif %}{% if use_tracing %}use tracing::info;
+{% endif %}{% if use_crossterm %}use crossterm::{
+    execute,
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen, enable_raw_mode, disable_raw_mode},
+};
+use std::io::stdout;
+{% endif %}
+{% if use_tokio %}#[tokio::main{% if tokio_flavor == "current_thread" %}(flavor = "current_thread"){% endif %}]
+async fn main() -> {% if use_color_eyre %}Result<()>{% else %}std::io::Result<()>{% endif %} {
+{% else %}fn main() -> {% if use_color_eyre %}Result<()>{% else %}std::io::Result<()>{% endif %} {
+{% endif %}    {% if use_color_eyre %}
+    color_eyre::install()?;
+    {% endif %}
+    {% if use_tracing %}
+    tracing_subscriber::fmt()
+        .with_env_filter(
+            tracing_subscriber::EnvFilter::try_from_default_env()
+                .unwrap_or_else(|_| "{{tracing_level}}".into())
+        )
+        .init();
+
+    info!("Application started");
+    {% endif %}
+    {% if use_crossterm %}
+    enable_raw_mode()?;
+    execute!(stdout(), EnterAlternateScreen)?;
+
+    println!("Hello from {{project-name}}!");
+
+    execute!(stdout(), LeaveAlternateScreen)?;
+    disable_raw_mode()?;
+    {% else %}println!("Hello from {{project-name}}!");
+    {% endif %}
+    Ok(())
+}

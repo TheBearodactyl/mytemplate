@@ -1,0 +1,19 @@
+[package]
+name = "{{project-name}}"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+{% if use_color_eyre %}color-eyre = "0.6"{% endif %}
+{% if use_tokio %}tokio = { version = "1", features = ["{% if tokio_flavor == "multi_thread" %}rt-multi-thread{% else %}rt{% endif %}", "macros"] }{% endif %}
+{% if use_crossterm %}crossterm = "0.28"{% endif %}
+{% if use_tracing %}
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+{% endif %}
+{% if use_mimalloc %}mimalloc = "0.1"{% endif %}
+
+{% if use_color_eyre %}
+[profile.dev.package.backtrace]
+opt-level = 3
+{% endif %}

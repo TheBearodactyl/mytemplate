@@ -1,0 +1,39 @@
+[template]
+cargo_generate_version = ">=0.22.0"
+
+[placeholders.use_color_eyre]
+type = "bool"
+prompt = "Add color-eyre error handling?"
+default = true
+
+[placeholders.use_tokio]
+type = "bool"
+prompt = "Add tokio async runtime?"
+default = false
+
+[placeholders.use_crossterm]
+type = "bool"
+prompt = "Add crossterm for terminal manipulation?"
+default = false
+
+[placeholders.use_tracing]
+type = "bool"
+prompt = "Add tracing/tracing-subscriber?"
+default = false
+
+[placeholders.use_mimalloc]
+type = "bool"
+prompt = "Add mimalloc allocator?"
+default = false
+
+[conditional.'use_tokio == true'.placeholders.tokio_flavor]
+type = "string"
+prompt = "Tokio runtime flavor?"
+choices = ["multi_thread", "current_thread"]
+default = "multi_thread"
+
+[conditional.'use_tracing == true'.placeholders.tracing_level]
+type = "string"
+prompt = "Default tracing level?"
+choices = ["trace", "debug", "info", "warn", "error"]
+default = "info"
