@@ -3,6 +3,8 @@
 #[global_allocator]
 static GLOBAL: MiMalloc = MiMalloc;
 
+{% endif %}{% if use_clap %} mod cli;
+
 {% endif %}{% if use_color_eyre %}use color_eyre::Result;
 {% endif %}{% if use_tracing %}use tracing::info;
 {% endif %}{% if use_crossterm %}use crossterm::{

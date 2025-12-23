@@ -26,6 +26,11 @@ type = "bool"
 prompt = "Add mimalloc allocator?"
 default = false
 
+[placeholders.use_clap]
+type = "bool"
+prompt = "Make it a CLI app?"
+default = false
+
 [conditional.'use_tokio == true'.placeholders.tokio_flavor]
 type = "string"
 prompt = "Tokio runtime flavor?"

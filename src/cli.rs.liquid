@@ -1,0 +1,7 @@
+{% if use_clap %}
+use clap::Parser;
+
+#[derive(Debug, Parser, Clone)]
+#[command(name = "{{project-name}}")]
+pub struct Cli {}
+{% endif %}
